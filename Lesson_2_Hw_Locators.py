@@ -1,6 +1,6 @@
 
-##########################################  Part 2: Practice with locators  ###########################################
-#
+##########################################  Practice with locators  ###########################################
+
 Amazon logo, search by XPATH, 'a-icon a-icon-logo'
 
 Email field, search by ID, 'ap_email'
