@@ -3,9 +3,9 @@ from behave import given, when, then
 from time import sleep
 
 
-# @given('Open target main page')
-# def open_target(context):
-#     context.driver.get('https://www.target.com/')
+@given('Open target main page for Lesson 3.2')
+def open_target(context):
+    context.driver.get('https://www.target.com/')
 
 
 @when('Click Sign In')
@@ -16,7 +16,7 @@ def click_sign_in(context):
 
 @when('Nav Drawer Click Sign In')
 def nav_drawer_click_sign_in(context):
-    context.driver.find_element(By.CSS_SELECTOR, "a[data-test='accountNav-signIn']").click()
+    context.driver.find_element(By.CSS_SELECTOR, "button[data-test='accountNav-signIn']").click()
     sleep(5)
 
 
