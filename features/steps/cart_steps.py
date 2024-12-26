@@ -3,17 +3,7 @@ from behave import given, when, then
 from time import sleep
 
 
-@given('Open target main page for Lesson 3')
-def open_target(context):
-    context.driver.get('https://www.target.com/')
-
-
-@when('Click on Cart Icon')
-def click_cart_icon(context):
-    context.driver.find_element(By.CSS_SELECTOR, "a[data-test='@web/CartLink']").click()
-    sleep(5)
-
-
+#Homework, Lesson 3
 @then('Verify "Your cart is empty" message is shown')
 def verify_cart_is_empty(context):
     expected_text = 'Your cart is empty'

@@ -2,11 +2,6 @@ from selenium.webdriver.common.by import By
 from behave import given, when, then
 from time import sleep
 
-
-# @given('Open target circle page')
-# def open_cirlce_page(context):
-#     context.driver.get('https://www.target.com/')
-#
 #
 # @when('Click on Cart Icon')
 # def click_cart_icon(context):
@@ -37,12 +32,12 @@ from time import sleep
 #     sleep(1)
 #     context.driver.switch_to.window(context.driver.window_handles[0])
 
-
-@given('Open target circle page')
-def open_cirlce_page(context):
-    context.driver.get('https://www.target.com/circle')
-
-
-@when('Verify Circle cells are shown')
-def verify_circle_cells_present(context):
-    context.driver.find_element(By.CSS_SELECTOR, '//*[@id="circle"]').click()
+#
+# @given('Open target circle page for Lesson 4')
+# def open_cirlce_page(context):
+#     context.driver.get('https://www.target.com/circle')
+#
+#
+# @when('Verify Circle cells are shown')
+# def verify_circle_cells_present(context):
+#     context.driver.find_element(By.CSS_SELECTOR, '//*[@id="circle"]').click()
