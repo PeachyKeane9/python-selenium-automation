@@ -1,9 +1,10 @@
+from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 from behave import given, when, then
 from time import sleep
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
@@ -34,49 +35,24 @@ def verify_url(context, product):
 
     ##############################################
 
-#
-# # # @when('Click on "add to cart" button for {product}') # # def add_to_cart(context, product): # #
-# context.driver.find_element(By.CSS_SELECTOR,'[aria-label="Add Igloo Playmate Elite MaxCold 16qt Hard Sided Cooler '
-# #
-#
-# '- Carbonite to cart"]').click() # @when('Click on "add to cart" button for cooler') # def add_to_cart(context): #
-# Wait until the button is clickable #     add_to_cart_button = WebDriverWait(context.driver, 10).until( #
-# EC.element_to_be_clickable((By.CSS_SELECTOR, #                                     '[aria-label="Add Igloo Playmate
-# Elite MaxCold 16qt Hard Sided Cooler - Carbonite to cart"]')) #     ) #     # Click the button #
-# add_to_cart_button.click()
-#
+
+ADD_TO_CART_BTN = (By.CSS_SELECTOR, "[id*='addToCartButton']")
+ADD_TO_CART_SIDE_NAV_BTN = (By.CSS_SELECTOR, "[data-test='content-wrapper'] [id*='addToCart']")
+PRODUCT_NAME = (By.CSS_SELECTOR, "[data-test='content-wrapper'] h4")
 
 
-# @when('Click on "add to cart" button for cooler')
-# def add_to_cart(context):
-#     # Find the button
-#     add_to_cart_button = context.driver.find_element(By.CSS_SELECTOR,
-#                                                      '[aria-label="Add Igloo Playmate Elite MaxCold 16qt Hard Sided '
-#                                                      'Cooler - Carbonite to cart"]')
-#
-#     # Scroll into view
-#     context.driver.execute_script("arguments[0].scrollIntoView(true);", add_to_cart_button)
-#
-#     # Wait for it to be clickable and then click
-#     WebDriverWait(context.driver, 20).until(
-#         EC.element_to_be_clickable(add_to_cart_button)
-#     ).click()
-
-
-@when('Click on "add to cart" button for cooler')
-def add_to_cart(context):
-    # Find the add-to-cart button
-    add_to_cart_button = context.driver.find_element(By.CSS_SELECTOR, '[aria-label="Add Igloo Playmate Elite MaxCold '
-                                                                      '16qt Hard Sided Cooler - Carbonite to cart"]')
-
-    # Execute JavaScript to click the button
-    context.driver.execute_script("arguments[0].click();", add_to_cart_button)
+@when('Click on Add to Cart button')
+def click_add_to_cart(context):
+    context.driver.find_element(*ADD_TO_CART_BTN).click()  # Always clicks on 1st Add to cart btn
+    # context.driver.find_elements(By.CSS_SELECTOR, "[id*='addToCartButton']")[0].click()
+    context.driver.wait.until(EC.visibility_of_element_located(ADD_TO_CART_SIDE_NAV_BTN))
 
 
 @when('Click on "add to cart" button in side nav')
-def add_to_cart_side_nav(context):
-    context.driver.find_element(By.CSS_SELECTOR, '[aria-label*="Add to cart"]').click()
-    sleep(5)
+def side_nav_click_add_to_cart(context):
+    context.driver.wait.until(EC.element_to_be_clickable(ADD_TO_CART_SIDE_NAV_BTN)).click()
+    # context.driver.find_element(*ADD_TO_CART_SIDE_NAV_BTN)
+    sleep(4)
 
 
 @then('verify {product} was added to cart')
