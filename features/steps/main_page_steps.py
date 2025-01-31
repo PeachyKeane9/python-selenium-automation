@@ -1,64 +1,36 @@
-from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
 from behave import given, when, then
-from time import sleep
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+
+CART_ICON = (By.CSS_SELECTOR, "[data-test='@web/CartLink']")
 
 
 @given('Open target main page')
-def open_target(context):
-    context.driver.get('https://www.target.com/')
-
-
-Search_Btn = (By.XPATH, "//button[@data-test='@web/Search/SearchButton']")
-
-
-@when('Search up tea')
-def search_product(context):
-    # Find the search field and enter 'tea'
-    context.driver.find_element(By.ID, 'search').send_keys('tea')
-
-    # Click the search button using the Tea_product locator
-    context.driver.find_element(*Search_Btn).click()
-
-    # Wait for the page with search results to load
-    WebDriverWait(context.driver, 10).until(
-        EC.visibility_of_element_located(Search_Btn))
-
-
-###############################
+def open_main(context):
+    context.app.main_page.open_main()
 
 
 @when('Search for {product}')
 def search_product(context, product):
-    #find search field and enter text
-    context.driver.find_element(By.ID, 'search').send_keys({product})
-    #click search
-    context.driver.find_element(*Search_Btn).click()
-    #wait for the page with search results to load
-    WebDriverWait(context.driver,10).until(EC.element_to_be_clickable(Search_Btn))
-    sleep(10)
+    context.app.header.search_product(product)
 
-################################
 
-# Homework, Lesson 3
-@when('Click on cart icon')
+@when('Click on Cart icon')
 def click_cart(context):
-    context.driver.find_element(By.CSS_SELECTOR, '[data-test="@web/CartLink"]').click()
+    context.driver.find_element(*CART_ICON).click()
 
 
-#Homework, Lesson 2, 3
-@when('Click sign in button')
-def click_sign_in(context):
-    context.driver.find_element(By.CSS_SELECTOR, "a[data-test='@web/AccountLink']").click()
-    sleep(5)
+@then('Verify at least 1 header link is shown')
+def verify_header_links(context):
+    el = context.driver.find_element(By.CSS_SELECTOR, "[data-test*='@web/GlobalHeader/UtilityHeader/']")
+    print('\nFind element:')
+    print(el)
 
 
-#Homework, Lesson 2, 3
-@when('Click sign in from side nav')
-def nav_drawer_click_sign_in(context):
-    context.driver.find_element(By.CSS_SELECTOR, "button[data-test='accountNav-signIn']").click()
-    sleep(5)
+@then('Verify {expected_amount} header links are shown')
+def verify_header_links_amount(context, expected_amount):
+    links = context.driver.find_elements(By.CSS_SELECTOR, "[data-test*='@web/GlobalHeader/UtilityHeader/']")
+    print('\nFind elements:')
+    print(links)
+    print(type(len(links)))
+
+    assert len(links) == int(expected_amount), f'Expected {expected_amount} links but got {len(links)}'
